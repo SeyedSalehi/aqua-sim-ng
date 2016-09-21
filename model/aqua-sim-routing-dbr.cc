@@ -68,10 +68,10 @@ void DBR_DeadNeighbTimer::expire(Event *e)
 // Insert the item into queue.
 // The queue is sorted by the expected sending time
 // of the packet.
-void MyPacketQueue::insert(QueueItem *q)
+void MyPacketQueue::insert(QueueItem2 *q)
 {
-	QueueItem *tmp;
-	std::deque<QueueItem*>::iterator iter;
+	QueueItem2 *tmp;
+	std::deque<QueueItem2*>::iterator iter;
 
 	// find the insert point
 	iter = m_dq.begin();
@@ -99,7 +99,7 @@ MyPacketQueue::update(Ptr<Packet> p, double t)
 {
 	Ptr<Packet> pkt;
 	uint32_t curID;
-	std::deque<QueueItem*>::iterator iter;
+	std::deque<QueueItem2*>::iterator iter;
   DBRHeader dbrh;
   p->PeekHeader(dbrh);
 
@@ -136,7 +136,7 @@ MyPacketQueue::purge(Ptr<Packet> p)
 {
 	Ptr<Packet> pkt;
 	uint32_t curID;
-	std::deque<QueueItem*>::iterator iter;
+	std::deque<QueueItem2*>::iterator iter;
   DBRHeader dbrh;
   p->PeekHeader(dbrh);
 
@@ -162,7 +162,7 @@ MyPacketQueue::purge(Ptr<Packet> p)
 // Dump all the items in queue for debug
 void MyPacketQueue::dump()
 {
-	std::deque<QueueItem*>::iterator iter;
+	std::deque<QueueItem2*>::iterator iter;
   DBRHeader dbrh;
 	int i = 0;
 
@@ -722,7 +722,7 @@ AquaSimDBR::SendBeacon(void)
 void
 AquaSimDBR::Send_Callback(void)
 {
-	QueueItem *q;
+	QueueItem2 *q;
   DBRHeader dbrh;
 
 	// we're done if there is no packet in queue
@@ -1257,11 +1257,11 @@ AquaSimDBR::HandlePktForward(Ptr<Packet> p)
   p->AddHeader(ash);
   p->AddHeader(dbrh);
   p->AddPacketTag(ptag);
-	QueueItem *q = new QueueItem(p, expected_send_time);
+	QueueItem2 *q = new QueueItem2(p, expected_send_time);
 
 	/*
 	m_pq.insert(q);
-	QueueItem *qf;
+	QueueItem2 *qf;
 	qf = m_pq.front();
 	send_timer_->resched(qf->m_sendTime - NOW);
 	*/
